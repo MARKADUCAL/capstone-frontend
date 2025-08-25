@@ -1,0 +1,102 @@
+<div class="bookings-container">
+  <div class="header">
+    <div class="header-left">
+      <h2>My Assigned Bookings</h2>
+    </div>
+    <div class="header-right">
+      <button mat-raised-button color="accent" (click)="refreshBookings()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Loading your assigned bookings...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <mat-icon class="error-icon">error</mat-icon>
+        <h3>Error Loading Bookings</h3>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="refreshBookings()">
+          Try Again
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- No Bookings State -->
+  <div
+    *ngIf="!loading && !error && bookings.length === 0"
+    class="no-bookings-container"
+  >
+    <mat-card class="no-bookings-card">
+      <mat-card-content>
+        <mat-icon class="no-bookings-icon">assignment</mat-icon>
+        <h3>No Assigned Bookings</h3>
+        <p>
+          You don't have any bookings assigned to you yet. Check back later!
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Bookings Grid -->
+  <div *ngIf="!loading && !error && bookings.length > 0" class="bookings-grid">
+    @for (booking of bookings; track booking.id) {
+    <mat-card class="booking-card" [ngClass]="booking.status.toLowerCase()">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <div class="user-avatar-placeholder">
+            {{ getUserInitials(booking.customerName) }}
+          </div>
+        </div>
+        <mat-card-title>{{ booking.customerName }}</mat-card-title>
+        <mat-card-subtitle>
+          Vehicle Type: {{ booking.vehicleType }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="booking-details">
+          <p><mat-icon>calendar_today</mat-icon> {{ booking.date }}</p>
+          <p><mat-icon>access_time</mat-icon> {{ booking.time }}</p>
+          <p>
+            <mat-icon>local_car_wash</mat-icon>
+            {{ booking.serviceType || "Standard Wash" }}
+          </p>
+          <p>
+            <mat-icon>attach_money</mat-icon> {{ booking.price | currency }}
+          </p>
+        </div>
+      </mat-card-content>
+
+      <div class="action-buttons">
+        <button class="action-btn view-btn" (click)="viewBooking(booking)">
+          View
+        </button>
+        @if (booking.status === 'Approved') {
+        <button
+          class="action-btn complete-btn"
+          (click)="completeBooking(booking)"
+        >
+          Complete
+        </button>
+        } @else {
+        <button class="action-btn edit-btn" (click)="editBooking(booking)">
+          Edit
+        </button>
+        }
+      </div>
+    </mat-card>
+    }
+  </div>
+</div>
