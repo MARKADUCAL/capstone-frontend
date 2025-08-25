@@ -5,7 +5,9 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/autowash-hub/browser"
+        "distDir": "dist/autowash-hub/browser",
+        "installCommand": "npm install",
+        "buildCommand": "npm run build"
       }
     }
   ],
@@ -14,9 +16,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "functions": {},
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
