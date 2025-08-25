@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -60,10 +60,15 @@ export class CarWashBookingComponent implements OnInit {
     private bookingService: BookingService,
     private dialog: MatDialog,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
     this.loadBookings();
     this.loadEmployees();
   }
@@ -231,6 +236,11 @@ export class CarWashBookingComponent implements OnInit {
   }
 
   loadEmployees(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
+
     this.http.get(`${this.apiUrl}/get_all_employees`).subscribe({
       next: (response: any) => {
         if (

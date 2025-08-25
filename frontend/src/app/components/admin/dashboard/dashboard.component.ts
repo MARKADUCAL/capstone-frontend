@@ -148,6 +148,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadDashboardData(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      this.isLoading = false;
+      this.isLoadingStats = false;
+      this.isLoadingBookings = false;
+      return;
+    }
+
     this.isLoading = true;
     this.isLoadingStats = true;
     this.isLoadingBookings = true;
@@ -167,6 +175,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadDashboardSummary(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_dashboard_summary`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -208,6 +222,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadCustomerCount(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_customer_count`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -226,6 +246,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadEmployeeCount(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_employee_count`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -244,6 +270,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadBookingCount(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_booking_count`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -261,6 +293,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadCompletedBookingCount(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_completed_booking_count`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -278,6 +316,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadPendingBookingCount(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_pending_booking_count`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -295,6 +339,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadRecentBookings(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_all_bookings`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -330,6 +380,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadRevenueData(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_revenue_analytics`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {
@@ -368,6 +424,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadServiceDistribution(): Promise<void> {
     return new Promise((resolve) => {
+      // Skip API calls during server-side rendering or if no API URL
+      if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+        resolve();
+        return;
+      }
+
       this.http.get(`${this.apiUrl}/get_service_distribution`).subscribe({
         next: (response: any) => {
           if (response?.status?.remarks === 'success') {

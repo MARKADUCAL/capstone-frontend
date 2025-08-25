@@ -96,13 +96,27 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
+
     this.loadBookingStats();
+
+    // Initialize charts only in browser environment
     if (isPlatformBrowser(this.platformId)) {
-      this.initializeCharts();
+      setTimeout(() => {
+        this.initializeCharts();
+      }, 100);
     }
   }
 
   private loadBookingStats(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
+
     // Total Bookings
     this.http.get(`${this.apiUrl}/get_booking_count`).subscribe({
       next: (response: any) => {

@@ -56,10 +56,19 @@ export class EmployeeManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
     this.loadEmployees();
   }
 
   loadEmployees(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
+
     this.loading = true;
     this.error = null;
 

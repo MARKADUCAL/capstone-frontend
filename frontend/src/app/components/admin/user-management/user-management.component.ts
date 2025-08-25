@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 export interface User {
   id: number;
@@ -54,14 +56,24 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
     this.loadCustomers();
   }
 
   loadCustomers(): void {
+    // Skip API calls during server-side rendering or if no API URL
+    if (!isPlatformBrowser(this.platformId) || !this.apiUrl) {
+      return;
+    }
+
     this.loading = true;
     this.error = null;
     this.http.get(`${this.apiUrl}/get_all_customers`).subscribe({
